@@ -21,8 +21,4 @@ npm run test
 ```
 npm run deploy:<network>
 ```
-- Verify on etherscan
-```
-npx hardhat verify --network rinkeby <YOUR_CONTRACT_ADDRESS>
-```
 
