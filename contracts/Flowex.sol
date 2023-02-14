@@ -4,6 +4,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Flowex is Ownable {
     address private ntfContract;
+
+    
     constructor() {
         
     }
@@ -63,19 +65,19 @@ contract Flowex is Ownable {
     }
 
     function addProdcut(
-        string memory companyName,
+        string memory _companyName,
         uint256 _productID,
         string memory _treeType,
         string memory _location,
         WoodType _woodType,
-        string memory colour,
+        string memory _colour,
         bool _isRaw,
         uint256 _pricePerUnit,
         string memory _photo,
         uint256 _amount,
         Unit _unit
-    ) external onlyOwner registered(companyName){
-        // Product storage newProduct
+    ) external onlyOwner registered(_companyName){
+        companyToProducts[_companyName].push(Product(_productID, _treeType, _location, _woodType, _colour, _isRaw, _pricePerUnit, _photo, _amount, _unit, false));
     }
 
     function approveProduct() external onlyOwner{
