@@ -106,5 +106,9 @@ contract Flowex is Ownable {
         
     }
 
+    function getAllProducts(string memory companyName) external view returns(memory [] Product) {
+        return companyToProducts[compannyName];
+    }
+
 
 }
