@@ -97,9 +97,9 @@ contract Flowex is Ownable {
         companyToProducts[_companyName].push(Product(_productID, _treeType, _location, _woodType, _colour, _isRaw, _pricePerUnit, _photo, _amount, _unit, false));
     }
 
-    function chcekProductID(uint256 productIndex, uint256 productID) internal pure{
-         uint256 expectedProductId = companyToProducts[companyName][companyIndex].productID;
-        require(productId == expectedProductId, "Wrong product ID");
+    function chcekProductID(string memory companyName, uint256 productIndex, uint256 productID) internal view{
+         uint256 expectedProductId = companyToProducts[companyName][productIndex].productID;
+        require(productID == expectedProductId, "Wrong product ID");
     }
 
     function approveProduct(
@@ -116,8 +116,8 @@ contract Flowex is Ownable {
             bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
             address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
             require(signer == qaAddress, "Not signed by QA");
-            chcekProductID(productIndex, productID);
-            companyToProducts[companyName][companyIndex].approved = true;
+            chcekProductID(companyName, productIndex, productID);
+            companyToProducts[companyName][productIndex].approved = true;
             uint256 tokenId = inft.safeMint(address(this), baseURI);
             certificates[productID] = tokenId;
     }
@@ -131,8 +131,8 @@ contract Flowex is Ownable {
         uint256 productID,
         string memory companyName
     ) external onlyOwner registered(companyName){
-        chcekProductID(productIndex, productID);
-        companyToProducts[companyName][companyIndex].amount += amount;
+        chcekProductID(companyName, productIndex, productID);
+        companyToProducts[companyName][productIndex].amount += amount;
         emit AddSupply(
             amount,
             timestamp,
@@ -144,11 +144,11 @@ contract Flowex is Ownable {
     function removeSupply(
         uint256 amount,
         uint256 productIndex, 
-        uint256 productID.
+        uint256 productID,
         string memory companyName
     ) external onlyOwner registered(companyName){
-        chcekProductID(productIndex, productID);
-        companyToProducts[companyName][companyIndex].amount -= amount;
+        chcekProductID(companyName, productIndex, productID);
+        companyToProducts[companyName][productIndex].amount -= amount;
         emit RemoveSupply(
             amount,
             block.timestamp
@@ -156,22 +156,15 @@ contract Flowex is Ownable {
     }
 
     function removeProduct() external onlyOwner{
-        chcekProductID(productIndex, productID);
-        companyToProducts[companyName][companyIndex].amount += amount;
-        emit AddSupply(
-            amount,
-            timestamp,
-            latitude,
-            longitude
-        );
-    }
-
-    function verifyProduct() external view {
         
     }
 
-    function getAllProducts(string memory companyName) external view returns(memory [] Product) {
-        return companyToProducts[compannyName];
+    function verifyProductCertificate(uint256 productId) external view returns(uint256){
+        return certificates[productId];
+    }
+
+    function getAllProducts(string memory companyName) external view returns(Product[] memory) {
+        return companyToProducts[companyName];
     }
 
 
