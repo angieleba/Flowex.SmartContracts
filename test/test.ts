@@ -26,9 +26,10 @@ describe('Test Suite', ()=> {
 
         await flowex.deployed();
 
-        
+        let tx = await nft.setContractOwner(flowex.address);
+        await tx.wait();
 
-        return {nft, contractOwner, add1, add2, otherAccounts}
+        return {nft, flowex, contractOwner, add1, add2, otherAccounts}
     }
 
     it("Should set the nft owner", async () => {
@@ -40,18 +41,123 @@ describe('Test Suite', ()=> {
 
     it("Should set the nft name", async () => {
 
-        const { nft, contractOwner } = await loadFixture(deployOnceFixture);
+        const { nft } = await loadFixture(deployOnceFixture);
 
         expect(await nft.name()).to.equal("Flowex Cert");
         expect(await nft.symbol()).to.equal("FXC");
     });
 
+    it.only("Should not mint NFT certificate if not flowex address", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        await expect(nft.safeMint(add1.address, "https://bafybeibeqf6pfyq4fjalcwibmvmyeyt7g43w54hmlyrbtc5fbhmycbt2dy.ipfs.w3s.link/")).to.be.reverted;
+        await expect(nft.connect(add1).safeMint(add1.address, "https://bafybeibeqf6pfyq4fjalcwibmvmyeyt7g43w54hmlyrbtc5fbhmycbt2dy.ipfs.w3s.link/")).to.be.reverted;
+    });
+
     it("Should ", async () => {
 
-        const { nft, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
 
         // expect(await nft.owner()).to.equal(contractOwner.address);
     });
 
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
+
+    it("Should ", async () => {
+
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+
+        // expect(await nft.owner()).to.equal(contractOwner.address);
+    });
 
 });
