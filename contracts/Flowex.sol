@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Flowex {
+contract Flowex is Ownable {
+    address private ntfContract;
     constructor() {
         
     }
@@ -28,16 +30,39 @@ contract Flowex {
         string treeType;
         string location;
         WoodType woodType;
-        Shade shade;
+        string colour;
         bool isRaw;
         uint256 pricePerUnit;
         string photo;
         uint256 amount;
         Unit unit;
+        bool approved;
     }
 
     mapping (string => Product[]) companyToProducts;
+    
+    function addProdcut() external onlyOwner{
+        
+    }
 
+    function approveProduct() external onlyOwner{
+        
+    }
 
+    function addSupply() external onlyOwner{
+        
+    }
+
+    function removeSupply() external onlyOwner{
+        
+    }
+
+    function removeProduct() external onlyOwner{
+        
+    }
+
+    function verifyProduct() external view {
+        
+    }
 
 }

@@ -21,7 +21,7 @@ contract SBTNFTCertificate is ERC721, Ownable {
         baseURI_ = _newBaseURI;
     }
 
-    function safeMint(address to, string memory newBaseURI) public onlyOwner {
+    function safeMint(address to, string memory newBaseURI) external onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         setBaseURI(newBaseURI);
