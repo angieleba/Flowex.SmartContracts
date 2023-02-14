@@ -48,6 +48,11 @@ contract Flowex is Ownable {
         uint256 longitude
     );
 
+    event RemoveSupply(
+        uint256 amount,
+        uint256 timestamp
+    );
+
 
     mapping (string => Product[]) companyToProducts;
     mapping (string => bool) supplierCompanies;
@@ -120,12 +125,29 @@ contract Flowex is Ownable {
         );
     }
 
-    function removeSupply() external onlyOwner{
-        
+    function removeSupply(
+        uint256 amount,
+        uint256 productIndex, 
+        uint256 productID.
+        string memory companyName
+    ) external onlyOwner{
+        chcekProductID(productIndex, productID);
+        companyToProducts[companyName][companyIndex].amount -= amount;
+        emit RemoveSupply(
+            amount,
+            block.timestamp
+        );
     }
 
     function removeProduct() external onlyOwner{
-        
+        chcekProductID(productIndex, productID);
+        companyToProducts[companyName][companyIndex].amount += amount;
+        emit AddSupply(
+            amount,
+            timestamp,
+            latitude,
+            longitude
+        );
     }
 
     function verifyProduct() external view {
