@@ -15,9 +15,9 @@ contract SBTNFTCertificate is ERC721, Ownable {
 
     bool private contractOwnerSet;
 
-    function setContractOwner() external {
+    function setContractOwner(address flowexAddress) external {
         require(!contractOwnerSet, "Contract owner already set" );
-        transferOwnership(msg.sender);
+        transferOwnership(flowexAddress);
     }
 
     function _baseURI() override internal view virtual returns (string memory) {

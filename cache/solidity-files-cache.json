@@ -40,8 +40,8 @@
       ]
     },
     "/Users/tahliltahlil/Desktop/MasterZ/FlowExSmartContract/Flowex.SmartContracts/contracts/SBTNFTCertificate.sol": {
-      "lastModificationDate": 1676395686863,
-      "contentHash": "7bd53279fc21eb38d4d6cf1ca9c42e36",
+      "lastModificationDate": 1676398680596,
+      "contentHash": "75ce58e51848c0454bc1e94aeb098400",
       "sourceName": "contracts/SBTNFTCertificate.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -517,8 +517,8 @@
       ]
     },
     "/Users/tahliltahlil/Desktop/MasterZ/FlowExSmartContract/Flowex.SmartContracts/contracts/Interfaces/INFT.sol": {
-      "lastModificationDate": 1676389600867,
-      "contentHash": "efba36f702a5058579d3e1dc5325c859",
+      "lastModificationDate": 1676398741777,
+      "contentHash": "c5f37304605ff6b3d67871abb136c720",
       "sourceName": "contracts/Interfaces/INFT.sol",
       "solcConfig": {
         "version": "0.8.17",

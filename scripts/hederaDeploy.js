@@ -1,5 +1,5 @@
 const path = require('path');
-const { writeFile } = require('fs');
+var fs = require('fs');
 
 require("dotenv").config({ path: path.resolve(__dirname, '..', '.env') });
 const nftABIDetails = require('../artifacts/contracts/SBTNFTCertificate.sol/SBTNFTCertificate.json');
@@ -63,18 +63,27 @@ async function main() {
 	const flowexAddress = "0x" + contractAddress;
 	console.log(`The Flowex smart contract ID in Solidity format is: ${flowexAddress} \n`);
 	const contractBaseLink = "https://hashscan.io/testnet/contract/";
-	await writeFile(
-		"./data.json",
+	const flowexContractId = contractId;
+	fs.writeFileSync(
+		"data.json",
 		JSON.stringify({
 		  nftAddress: nftAddress,
 		  nftContractLink: contractBaseLink+nftContractId,
 		  flowexAddress: flowexAddress,
-		  flowexContractLink: contractBaseLink+contractId,
-		}),
-		null,
-		4
+		  flowexContractLink: contractBaseLink+flowexContractId,
+		}, null, 4)		
 	  );
-	
 
+	  // Initialize the contracts
+	let contractExecuteTx = new ContractExecuteTransaction()
+	.setContractId(nftContractId)
+	.setGas(100000)
+	.setFunction(
+		"setContractOwner",
+		new ContractFunctionParameters().addAddress(flowexAddress)
+	);
+	let contractExecuteSubmit = await contractExecuteTx.execute(client);
+	let contractExecuteRx = await contractExecuteSubmit.getReceipt(client);
+	console.log(`Initialize NFT contract : ${contractExecuteRx.status} \n`);
 }
 main();

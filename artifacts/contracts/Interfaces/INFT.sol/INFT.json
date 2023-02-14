@@ -271,7 +271,13 @@
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "flowexAddress",
+          "type": "address"
+        }
+      ],
       "name": "setContractOwner",
       "outputs": [],
       "stateMutability": "nonpayable",
