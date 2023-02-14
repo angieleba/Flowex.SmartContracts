@@ -39,10 +39,43 @@ contract Flowex is Ownable {
         bool approved;
     }
 
+
     mapping (string => Product[]) companyToProducts;
+    mapping (string => bool) supplierCompanies;
+
+    modifier notRegistered(string memory companyName) {
+        require(!supplierCompanies[companyName], "Company already registered");
+        _;
+    }
+
+    modifier registered(string memory companyName) {
+        require(supplierCompanies[companyName], "Company not registered");
+        _;
+    }
     
-    function addProdcut() external onlyOwner{
-        
+    function addCompany(string memory companyName) external notRegistered(companyName){
+        supplierCompanies[companyName] = true;
+    }
+
+    function disapproveCompany(string memory companyName) external registered(companyName){
+        supplierCompanies[companyName] = false;
+        delete companyToProducts[companyName];
+    }
+
+    function addProdcut(
+        string memory companyName,
+        uint256 _productID,
+        string memory _treeType,
+        string memory _location,
+        WoodType _woodType,
+        string memory colour,
+        bool _isRaw,
+        uint256 _pricePerUnit,
+        string memory _photo,
+        uint256 _amount,
+        Unit _unit
+    ) external onlyOwner registered(companyName){
+        // Product storage newProduct
     }
 
     function approveProduct() external onlyOwner{
