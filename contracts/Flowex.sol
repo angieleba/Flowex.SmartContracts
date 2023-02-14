@@ -41,6 +41,13 @@ contract Flowex is Ownable {
         bool approved;
     }
 
+    event AddSupply(
+        uint256 amount,
+        uint256 timestamp,
+        uint256 latitude,
+        uint256 longitude
+    );
+
 
     mapping (string => Product[]) companyToProducts;
     mapping (string => bool) supplierCompanies;
@@ -80,18 +87,37 @@ contract Flowex is Ownable {
         companyToProducts[_companyName].push(Product(_productID, _treeType, _location, _woodType, _colour, _isRaw, _pricePerUnit, _photo, _amount, _unit, false));
     }
 
+    function chcekProductID(uint256 productIndex, uint256 productID) internal pure{
+         uint256 expectedProductId = companyToProducts[companyName][companyIndex].productID;
+        require(productId == expectedProductId, "Wrong product ID");
+    }
+
     function approveProduct(bytes32 _hashedMessage, uint8 _v, bytes32 _r, bytes32 _s, uint256 productIndex, uint256 productID, string memory companyName) external onlyOwner{
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
         address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
         require(signer == qaAddress, "Not signed by QA");
-        uint256 expectedProductId = companyToProducts[companyName][companyIndex].productID;
-        require(productId == expectedProductId, "Wrong product ID");
+        chcekProductID(productIndex, productID);
         companyToProducts[companyName][companyIndex].approved = true;
     }
 
-    function addSupply() external onlyOwner{
-        
+    function addSupply(
+        uint256 amount,
+        uint256 timestamp,
+        uint256 latitude,
+        uint256 longitude,
+        uint256 productIndex, 
+        uint256 productID.
+        string memory companyName
+    ) external onlyOwner{
+        chcekProductID(productIndex, productID);
+        companyToProducts[companyName][companyIndex].amount += amount;
+        emit AddSupply(
+            amount,
+            timestamp,
+            latitude,
+            longitude
+        );
     }
 
     function removeSupply() external onlyOwner{
