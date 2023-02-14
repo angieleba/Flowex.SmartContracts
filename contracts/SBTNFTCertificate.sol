@@ -11,7 +11,7 @@ contract SBTNFTCertificate is ERC721, Ownable {
     Counters.Counter private _tokenIdCounter;
 
      string private baseURI_ = "http://defaultBaseUri.com/";
-    constructor(string memory _greeting) ERC721("Flowex Cert", "FXC") {}
+    constructor() ERC721("Flowex Cert", "FXC") {}
 
     bool private contractOwnerSet;
 

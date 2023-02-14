@@ -9,7 +9,6 @@ contract Flowex is Ownable {
     INFT inft;
     constructor(address _nftContractAddress, address _qaAddress ) {
         inft = INFT(_nftContractAddress);
-        inft.setContractOwner();
         qaAddress = _qaAddress;
     }
 
