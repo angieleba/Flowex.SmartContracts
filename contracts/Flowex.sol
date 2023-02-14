@@ -155,8 +155,13 @@ contract Flowex is Ownable {
         );
     }
 
-    function removeProduct() external onlyOwner{
-        
+    function removeProduct(
+        uint256 productIndex, 
+        uint256 productID,
+        string memory companyName
+    ) external onlyOwner registered(companyName){
+        chcekProductID(companyName, productIndex, productID);
+        delete companyToProducts[companyName];
     }
 
     function verifyProductCertificate(uint256 productId) external view returns(uint256){
