@@ -29,7 +29,8 @@ describe('Test Suite', ()=> {
         let tx = await nft.setContractOwner(flowex.address);
         await tx.wait();
 
-        return {nft, flowex, contractOwner, add1, add2, otherAccounts}
+        const companyName = "Timberline";
+        return {nft, flowex, contractOwner, add1, add2, otherAccounts, companyName}
     }
 
     it("Should set the nft owner", async () => {
@@ -47,26 +48,37 @@ describe('Test Suite', ()=> {
         expect(await nft.symbol()).to.equal("FXC");
     });
 
-    it.only("Should not mint NFT certificate if not flowex address", async () => {
+    it("Should not mint NFT certificate if not flowex address", async () => {
 
-        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { nft, add1 } = await loadFixture(deployOnceFixture);
 
         await expect(nft.safeMint(add1.address, "https://bafybeibeqf6pfyq4fjalcwibmvmyeyt7g43w54hmlyrbtc5fbhmycbt2dy.ipfs.w3s.link/")).to.be.reverted;
         await expect(nft.connect(add1).safeMint(add1.address, "https://bafybeibeqf6pfyq4fjalcwibmvmyeyt7g43w54hmlyrbtc5fbhmycbt2dy.ipfs.w3s.link/")).to.be.reverted;
     });
 
-    it("Should ", async () => {
+    it.only("Should add product", async () => {
 
-        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { flowex, companyName } = await loadFixture(deployOnceFixture);
 
-        // expect(await nft.owner()).to.equal(contractOwner.address);
+        let tx = await flowex.addCompany(companyName);
+        await tx.wait();
+        tx = await flowex.addProdcut(companyName, 123, "Norwegian Spruce", "Hallerbos Forest", 1, "Brown", true, 35, "https://unsplash.com/photos/hf5KNXEuWp8", 42, 0);
+        await tx.wait();
+        const products = await flowex.getAllProducts(companyName);
+        expect(products[0].productID.toNumber()).to.be.eq(123);
+        expect(products[0].treeType.toString()).to.be.eq("Norwegian Spruce");
+    
     });
 
-    it("Should ", async () => {
+    it.only("Should not add product for non existant company", async () => {
 
-        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { flowex, companyName } = await loadFixture(deployOnceFixture);
 
-        // expect(await nft.owner()).to.equal(contractOwner.address);
+        let tx = await flowex.addCompany(companyName);
+        await tx.wait();
+        await expect(flowex.addProdcut("Fake Company", 123, "Norwegian Spruce", "Hallerbos Forest", 1, "Brown", true, 35, "https://unsplash.com/photos/hf5KNXEuWp8", 42, 0)).to.be.reverted;
+        
+        
     });
 
     it("Should ", async () => {
