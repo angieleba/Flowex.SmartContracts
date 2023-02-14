@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
+import "./Interfaces/INFT.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Flowex is Ownable {
     address private ntfContract;
     address qaAddress;
-    
-    constructor(address _nftContractAddress, ) {
-        
+    INFT inft;
+    constructor(address _nftContractAddress, address _qaAddress ) {
+        inft = INFT(_nftContractAddress);
+        inft.setContractOwner();
+        qaAddress = _qaAddress;
     }
 
     enum WoodType {
@@ -53,6 +56,8 @@ contract Flowex is Ownable {
         uint256 timestamp
     );
 
+    // product ID => token ID
+    mapping (uint256=>uint256) certificates;
 
     mapping (string => Product[]) companyToProducts;
     mapping (string => bool) supplierCompanies;
@@ -97,24 +102,35 @@ contract Flowex is Ownable {
         require(productId == expectedProductId, "Wrong product ID");
     }
 
-    function approveProduct(bytes32 _hashedMessage, uint8 _v, bytes32 _r, bytes32 _s, uint256 productIndex, uint256 productID, string memory companyName) external onlyOwner{
-        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
-        address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
-        require(signer == qaAddress, "Not signed by QA");
-        chcekProductID(productIndex, productID);
-        companyToProducts[companyName][companyIndex].approved = true;
+    function approveProduct(
+        bytes32 _hashedMessage,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s,
+        uint256 productIndex,
+        uint256 productID,
+        string memory companyName,
+        string memory baseURI
+        ) external onlyOwner{
+            bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+            bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
+            address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
+            require(signer == qaAddress, "Not signed by QA");
+            chcekProductID(productIndex, productID);
+            companyToProducts[companyName][companyIndex].approved = true;
+            uint256 tokenId = inft.safeMint(address(this), baseURI);
+            certificates[productID] = tokenId;
     }
 
-    function addSupply(
+    function addSupply (
         uint256 amount,
         uint256 timestamp,
         uint256 latitude,
         uint256 longitude,
         uint256 productIndex, 
-        uint256 productID.
+        uint256 productID,
         string memory companyName
-    ) external onlyOwner{
+    ) external onlyOwner registered(companyName){
         chcekProductID(productIndex, productID);
         companyToProducts[companyName][companyIndex].amount += amount;
         emit AddSupply(
@@ -130,7 +146,7 @@ contract Flowex is Ownable {
         uint256 productIndex, 
         uint256 productID.
         string memory companyName
-    ) external onlyOwner{
+    ) external onlyOwner registered(companyName){
         chcekProductID(productIndex, productID);
         companyToProducts[companyName][companyIndex].amount -= amount;
         emit RemoveSupply(

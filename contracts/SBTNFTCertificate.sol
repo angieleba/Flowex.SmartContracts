@@ -13,6 +13,13 @@ contract SBTNFTCertificate is ERC721, Ownable {
      string private baseURI_ = "http://defaultBaseUri.com/";
     constructor(string memory _greeting) ERC721("Flowex Cert", "FXC") {}
 
+    bool private contractOwnerSet;
+
+    function setContractOwner() external {
+        require(!contractOwnerSet, "Contract owner already set" );
+        transferOwnership(msg.sender);
+    }
+
     function _baseURI() override internal view virtual returns (string memory) {
         return baseURI_;
     }
@@ -21,11 +28,12 @@ contract SBTNFTCertificate is ERC721, Ownable {
         baseURI_ = _newBaseURI;
     }
 
-    function safeMint(address to, string memory newBaseURI) external onlyOwner {
+    function safeMint(address to, string memory newBaseURI) external onlyOwner returns(uint256) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         setBaseURI(newBaseURI);
         _safeMint(to, tokenId);
+        return tokenId;
     }
 
 

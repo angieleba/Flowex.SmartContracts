@@ -129,5 +129,6 @@ interface INFT {
      */
     function isApprovedForAll(address owner, address operator) external view returns (bool);
 
-    function safeMint(address to, string memory newBaseURI) external;
+    function safeMint(address to, string memory newBaseURI) external returns(uint256);
+    function setContractOwner() external;
 }
