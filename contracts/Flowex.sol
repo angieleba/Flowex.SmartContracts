@@ -4,9 +4,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Flowex is Ownable {
     address private ntfContract;
-
+    address qaAddress;
     
-    constructor() {
+    constructor(address _nftContractAddress, ) {
         
     }
 
@@ -80,8 +80,14 @@ contract Flowex is Ownable {
         companyToProducts[_companyName].push(Product(_productID, _treeType, _location, _woodType, _colour, _isRaw, _pricePerUnit, _photo, _amount, _unit, false));
     }
 
-    function approveProduct() external onlyOwner{
-        
+    function approveProduct(bytes32 _hashedMessage, uint8 _v, bytes32 _r, bytes32 _s, uint256 productIndex, uint256 productID, string memory companyName) external onlyOwner{
+        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+        bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
+        address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
+        require(signer == qaAddress, "Not signed by QA");
+        uint256 expectedProductId = companyToProducts[companyName][companyIndex].productID;
+        require(productId == expectedProductId, "Wrong product ID");
+        companyToProducts[companyName][companyIndex].approved = true;
     }
 
     function addSupply() external onlyOwner{
@@ -99,5 +105,6 @@ contract Flowex is Ownable {
     function verifyProduct() external view {
         
     }
+
 
 }
