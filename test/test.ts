@@ -159,7 +159,7 @@ describe('Test Suite', ()=> {
 
     });
 
-    it.only("Should remove product", async () => {
+    it("Should remove product", async () => {
 
         const { flowex, companyName } = await loadFixture(deployOnceFixture);
         let tx = await flowex.addCompany(companyName);
@@ -176,11 +176,37 @@ describe('Test Suite', ()=> {
         expect(products[0]).to.be.undefined;        
     });
 
-    it("Should verify product certificate", async () => {
+    it.only("Should verify product certificate", async () => {
 
-        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { flowex, add1, companyName, baseURI } = await loadFixture(deployOnceFixture);
 
-        // expect(await nft.owner()).to.equal(contractOwner.address);
+        let tx = await flowex.addCompany(companyName);
+        await tx.wait();
+        tx = await flowex.addProduct(companyName, 123, "Norwegian Spruce", "Hallerbos Forest", 1, "Brown", true, 35, "https://unsplash.com/photos/hf5KNXEuWp8", 42, 0);
+        await tx.wait();
+        let dataToSign = {"CertificateTo":companyName};
+
+        let products = await flowex.getAllProducts(companyName);
+        expect(products[0].productID.toNumber()).to.be.eq(123);
+        expect(products[0].approved).to.be.eq(false);
+
+        let dataHash = ethers.utils.keccak256(
+            ethers.utils.toUtf8Bytes(JSON.stringify(dataToSign))
+        );
+
+        let dataHashBin = ethers.utils.arrayify(dataHash)
+    
+     
+        let signature = await add1.signMessage(dataHashBin); 
+        const r = signature.slice(0, 66);
+        const s = "0x" + signature.slice(66, 130);
+        const v = parseInt(signature.slice(130, 132), 16);
+
+        tx = await flowex.approveProduct(dataHash, v, r, s, 0, 123, companyName, baseURI);
+        await tx.wait();
+
+        const tokenId = await flowex.verifyProductCertificate(123);
+        expect(tokenId.toNumber()).to.be.eq(0);        
     });
 
     it("Should ", async () => {
