@@ -2,8 +2,9 @@
 pragma solidity 0.8.17;
 import "./Interfaces/INFT.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-contract Flowex is Ownable {
+contract Flowex is Ownable, IERC721Receiver {
     address private ntfContract;
     address qaAddress;
     INFT inft;
@@ -80,7 +81,7 @@ contract Flowex is Ownable {
         delete companyToProducts[companyName];
     }
 
-    function addProdcut(
+    function addProduct(
         string memory _companyName,
         uint256 _productID,
         string memory _treeType,
@@ -169,6 +170,10 @@ contract Flowex is Ownable {
 
     function getAllProducts(string memory companyName) external view returns(Product[] memory) {
         return companyToProducts[companyName];
+    }
+
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+        return IERC721Receiver.onERC721Received.selector;
     }
 
 

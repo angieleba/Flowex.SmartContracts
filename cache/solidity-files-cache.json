@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/tahliltahlil/Desktop/MasterZ/FlowExSmartContract/Flowex.SmartContracts/contracts/Flowex.sol": {
-      "lastModificationDate": 1676397182773,
-      "contentHash": "f15948b09ec5b03b190820b7da5d2400",
+      "lastModificationDate": 1676476377380,
+      "contentHash": "9dfca341da722844faa11e6e80765dd4",
       "sourceName": "contracts/Flowex.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -30,7 +30,8 @@
       },
       "imports": [
         "./Interfaces/INFT.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol"
       ],
       "versionPragmas": [
         "0.8.17"
@@ -40,8 +41,8 @@
       ]
     },
     "/Users/tahliltahlil/Desktop/MasterZ/FlowExSmartContract/Flowex.SmartContracts/contracts/SBTNFTCertificate.sol": {
-      "lastModificationDate": 1676398680596,
-      "contentHash": "75ce58e51848c0454bc1e94aeb098400",
+      "lastModificationDate": 1676475807011,
+      "contentHash": "27f3c92c35a01e690ae3410a4d369d5b",
       "sourceName": "contracts/SBTNFTCertificate.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -68,11 +69,11 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/Counters.sol"
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
-        "^0.8.17"
+        "^0.8.7"
       ],
       "artifacts": [
         "SBTNFTCertificate"
