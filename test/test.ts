@@ -83,7 +83,7 @@ describe('Test Suite', ()=> {
         
     });
 
-    it.only("Should approve product and mint nft", async () => {
+    it("Should approve product and mint nft", async () => {
 
         const { flowex, add1, companyName, baseURI } = await loadFixture(deployOnceFixture);
 
@@ -118,11 +118,24 @@ describe('Test Suite', ()=> {
 
     });
 
-    it("Should add product supply", async () => {
+    it.only("Should add product supply", async () => {
 
-        const { nft, flowex, contractOwner, add1, add2, otherAccounts } = await loadFixture(deployOnceFixture);
+        const { nft, flowex, contractOwner, add1, add2, otherAccounts, companyName } = await loadFixture(deployOnceFixture);
+        let tx = await flowex.addCompany(companyName);
+        await tx.wait();
+        tx = await flowex.addProduct(companyName, 123, "Norwegian Spruce", "Hallerbos Forest", 1, "Brown", true, 35, "https://unsplash.com/photos/hf5KNXEuWp8", 42, 0);
+        await tx.wait();
 
-        // expect(await nft.owner()).to.equal(contractOwner.address);
+        let products = await flowex.getAllProducts(companyName);
+        expect(products[0].productID.toNumber()).to.be.eq(123);
+        expect(products[0].amount.toNumber()).to.be.eq(42);
+
+        tx = await flowex.addSupply(8, 1676577998, 5064111, 466806, 0, 123, companyName);
+        await tx.wait();
+
+        products = await flowex.getAllProducts(companyName);
+        expect(products[0].productID.toNumber()).to.be.eq(123);
+        expect(products[0].amount.toNumber()).to.be.eq(50);
     });
 
     it("Should remove product supply", async () => {
