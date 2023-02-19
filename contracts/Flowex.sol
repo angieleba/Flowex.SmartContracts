@@ -97,7 +97,7 @@ contract Flowex is Ownable, IERC721Receiver {
         companyToProducts[_companyName].push(Product(_productID, _treeType, _location, _woodType, _colour, _isRaw, _pricePerUnit, _photo, _amount, _unit, false));
     }
 
-    function chcekProductID(string memory companyName, uint256 productIndex, uint256 productID) internal view{
+    function chcekProductID(string memory companyName, uint256 productIndex, uint256 productID) public view{
          uint256 expectedProductId = companyToProducts[companyName][productIndex].productID;
         require(productID == expectedProductId, "Wrong product ID");
     }
