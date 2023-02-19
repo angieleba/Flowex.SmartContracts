@@ -53,6 +53,7 @@
     "deploy:alfajores": "npx hardhat run --network alfajores scripts/deploy.ts",
     "deploy:celo": "npx hardhat run --network celo scripts/deploy.ts",
     "deploy:hedera": "node scripts/hederaDeploy.js",
-    "test": "npx hardhat test"
+    "test": "npx hardhat test",
+    "token": "node scripts/createUSDCToken.js"
   }
 }
